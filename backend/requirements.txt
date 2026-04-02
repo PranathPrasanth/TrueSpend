@@ -5,6 +5,8 @@ pytesseract
 Pillow
 pdfplumber
 sentence-transformers
+spacy
 openai
 numpy
 scikit-learn
+sqlite3
