@@ -1,6 +1,6 @@
 import sqlite3
 
-conn=sqlite3.connect("backend/db/policy.db")
+conn=sqlite3.connect("policy.db")
 cursor=conn.cursor()
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS policies(id integer PRIMARY KEY autoincrement,category text UNIQUE,rule text)""")
