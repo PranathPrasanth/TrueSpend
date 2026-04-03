@@ -8,7 +8,7 @@ router=APIRouter()
 @router.post("/")
 async def audit(file: UploadFile, purpose: str = Form(...)):
     receipt_text = extract_text(file)
-    policy = get_relevant_policy(receipt_text)
+    policy,category = get_relevant_policy(receipt_text)
 
-    result = audit_expense(receipt_text,purpose,policy)
+    result = audit_expense(receipt_text,purpose,policy,category)
     return result
