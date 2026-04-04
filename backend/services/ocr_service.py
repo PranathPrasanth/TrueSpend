@@ -1,5 +1,5 @@
 import pytesseract
-from PIL import image
+from PIL import Image
 import tempfile
 
 def extract_text(file):
