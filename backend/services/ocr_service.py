@@ -10,6 +10,9 @@ def extract_text(file):
     try:
         image=Image.open(temp_path)
         text=pytesseract.image_to_string(image)
+    except:
+        text=""
+        
     finally:
         import os
         os.remove(temp_path)

@@ -72,5 +72,5 @@ Frontend → FastAPI Backend → AI Engine → Policy Matching → Decision Outp
 
 ### 1. Clone Repo
 ```bash
-git clone <your-repo-link>
+git clone 
 cd TrueSpend
