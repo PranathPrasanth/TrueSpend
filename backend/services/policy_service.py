@@ -6,18 +6,24 @@ from sentence_transformers import SentenceTransformer, util
 nlp=spacy.load("en_core_web_sm")
 model=SentenceTransformer('all-MiniLM-L6-v2')
 
+<<<<<<< HEAD
 import os
 
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT=os.path.abspath(os.path.join(BASE_DIR, "../../"))
 policy_path=os.path.join(PROJECT_ROOT, "data/policy.pdf")
 
+=======
+>>>>>>> 018ce99b814e6b083bfcd9dedbeec2e34e628f27
 def load_policy_chunks():
     with pdfplumber.open("data/policy.pdf") as pdf:
         text=""
         for page in pdf.pages:
             text+=page.extract_text() or ""
+<<<<<<< HEAD
             
+=======
+>>>>>>> 018ce99b814e6b083bfcd9dedbeec2e34e628f27
     chunks=[chunk.strip() for chunk in text.split("\n\n") if chunk.strip()]
     return chunks
 policy_chunks=load_policy_chunks()
