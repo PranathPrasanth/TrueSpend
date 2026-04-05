@@ -3,7 +3,7 @@ import requests
 
 st.title("📊 TrueSpend")
 
-uploaded_file=st.file_uploader("Upload Receipt, type=["png","jpg","pdf])
+uploaded_file=st.file_uploader("Upload Receipt, type=["png","jpg","pdf"])
 purpose=st.text_input("Business Purpose")
 
 f st.button("Audit Expense"):
