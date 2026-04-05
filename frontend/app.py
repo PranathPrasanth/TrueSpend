@@ -16,10 +16,15 @@ if st.button("Audit Expense"):
                           )
         data=response.json()
 
-    st.success("Audit completed")
+        st.success("Audit completed")
 
-    st.write("### 📌 Category")
-    st.write(data.get("category","N/A"))
+        st.write("### 📌 Category")
+        st.write(data.get("category","N/A"))
 
-    st.write("### 📊 Result")
-    st.text(data.get("result","No result"))
+        st.write("### 📊 Result")
+        st.text(data.get("result","No result"))
+
+if "Approved" in data.get("result", ""):
+    st.success(data["result"])
+else:
+    st.error(data["result"])
