@@ -3,7 +3,7 @@ import requests
 
 st.title("📊 TrueSpend")
 
-uploaded_file = st.file_uploader("Upload Receipt", type=["png", "jpg", "pdf"])
+uploaded_file = st.file_uploader("Upload Receipt", type=["png", "jpg", "jpeg", "pdf"])
 purpose = st.text_input("Business Purpose")
 
 if st.button("Audit Expense"):
@@ -17,11 +17,7 @@ if st.button("Audit Expense"):
                 data={"purpose": purpose}
             )
 
-            try:
-                data = response.json()
-            except:
-                st.error("Backend did not return valid JSON")
-                st.stop()
+            data = response.json()
 
             st.success("Audit completed")
 
@@ -29,7 +25,7 @@ if st.button("Audit Expense"):
             st.write(data.get("category", "N/A"))
 
             st.write("### 📊 Result")
-            st.text(data.get("result", "No result"))
+            st.write(data.get("result", "No result"))
 
         except Exception as e:
-            st.error(f"Error connecting to backend: {str(e)}")
+            st.error(f"Error connecting to backend: {e}")
