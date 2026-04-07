@@ -22,7 +22,11 @@ if st.button("Audit Expense"):
                     data={"purpose": purpose}
                 )
 
-                data = response.json()
+                try:
+    data = response.json()
+except:
+    st.error("Backend did not return valid JSON")
+    st.stop()
 
                 st.success("Audit completed ✅")
 
