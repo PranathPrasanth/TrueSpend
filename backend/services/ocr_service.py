@@ -1,27 +1,23 @@
-from PIL import Image
 import pytesseract
+from PIL import Image
+import io
 
+# Force path to Tesseract
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 def extract_text(file):
     try:
-        image = Image.open(file)
-
-        # 🔥 CRITICAL IMPROVEMENT
-        image = image.convert("L")  # grayscale
-
-        # Improve contrast (IMPORTANT)
-        import numpy as np
-        image = np.array(image)
-        image = (image > 150) * 255  # thresholding
-        image = Image.fromarray(image.astype('uint8'))
+        image = Image.open(io.BytesIO(file))
 
         text = pytesseract.image_to_string(image)
 
-        print("OCR DEBUG:", text)  # DEBUG
+        print("OCR TEXT:", text)
+
+        if text.strip() == "":
+            return "EMPTY_OCR"
 
         return text
 
     except Exception as e:
-        print("OCR error:", e)
-        return ""
+        print("OCR ERROR:", str(e))
+        return "ERROR"

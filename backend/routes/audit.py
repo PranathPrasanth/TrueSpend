@@ -1,44 +1,36 @@
-from fastapi import APIRouter, UploadFile, Form
+from fastapi import APIRouter, UploadFile, File, Form
 from services.ocr_service import extract_text
+from services.policy_service import evaluate_policy
 
 router = APIRouter()
 
 @router.post("/audit/")
-async def audit_expense(file: UploadFile, purpose: str = Form(...)):
+async def audit_expense(file: UploadFile = File(...), purpose: str = Form(...)):
     try:
-        # Step 1: OCR
-        receipt_text = extract_text(file.file)
+        contents = await file.read()
+
+        receipt_text = extract_text(contents)
         print("OCR TEXT:", receipt_text)
 
-        # ------------------ FORCE CATEGORY ------------------
-        if any(word in receipt_text.lower() for word in ["restaurant", "food", "lunch", "dinner"]):
-            category = "food"
-        elif any(word in receipt_text.lower() for word in ["hotel", "stay"]):
-            category = "accommodation"
-        elif any(word in receipt_text.lower() for word in ["taxi", "uber", "flight"]):
-            category = "travel"
-        else:
-            category = "other"
+        # Handle OCR failure
+        if receipt_text in ["EMPTY_OCR", "ERROR"]:
+            return {
+                "category": "unknown",
+                "result": "Receipt is unclear or unreadable"
+            }
 
-        # ------------------ FORCE RESULT ------------------
-        if not receipt_text.strip():
-            result = "Decision: Flagged\nExplanation: No text extracted"
-        elif any(word in receipt_text.lower() for word in ["beer", "wine", "whiskey"]):
-            result = "Decision: Flagged\nExplanation: Alcohol not allowed"
-        else:
-            result = "Decision: Approved\nExplanation: Expense looks valid"
+        result = evaluate_policy(receipt_text, purpose)
+        print("FINAL RESULT:", result)
 
-        print("CATEGORY:", category)
-        print("RESULT:", result)
-
+        # Ensure proper JSON response
         return {
-            "category": category,
-            "result": result
+            "category": result.get("category", "unknown"),
+            "result": result.get("result", "No result")
         }
 
     except Exception as e:
-        print("ERROR:", e)
+        print("AUDIT ERROR:", str(e))
         return {
             "category": "error",
-            "result": str(e)
+            "result": f"Backend crashed: {str(e)}"
         }
