@@ -1,5 +1,5 @@
 def is_blurry(text):
-    return len(text.strip())<20
+    return len(text.strip())<5
 
 def validate_receipt(text):
     if is_blurry(text):

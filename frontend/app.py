@@ -1,30 +1,45 @@
 import streamlit as st
 import requests
 
+st.set_page_config(page_title="TrueSpend", page_icon="📊")
+
 st.title("📊 TrueSpend")
 
-uploaded_file=st.file_uploader("Upload Receipt", type=["png","jpg","pdf"])
-purpose=st.text_input("Business Purpose")
+# Upload + Input
+uploaded_file = st.file_uploader("Upload Receipt", type=["png", "jpg", "pdf"])
+purpose = st.text_input("Business Purpose")
 
+# Button trigger
 if st.button("Audit Expense"):
-    if uploaded_file is None or purpose.strip()=="":
+    if uploaded_file is None or purpose.strip() == "":
         st.warning("Please upload receipt and enter purpose")
     else:
-        response=requests.post("http://localhost:8000/audit/",
-                          files={"file":uploaded_file},
-                          data={"purpose":purpose}
-                          )
-        data=response.json()
+        with st.spinner("Analyzing receipt... ⏳"):
+            try:
+                response = requests.post(
+                    "http://localhost:8000/audit/",
+                    files={"file": uploaded_file},
+                    data={"purpose": purpose}
+                )
 
-        st.success("Audit completed")
+                data = response.json()
 
-        st.write("### 📌 Category")
-        st.write(data.get("category","N/A"))
+                st.success("Audit completed ✅")
 
-        st.write("### 📊 Result")
-        st.text(data.get("result","No result"))
+                # Category
+                st.write("### 📌 Category")
+                st.write(data.get("category", "N/A"))
 
-if "Approved" in data.get("result", ""):
-    st.success(data["result"])
-else:
-    st.error(data["result"])
+                # Result (Color coded)
+                st.write("### 📊 Result")
+                result_text = data.get("result", "No result")
+
+                if "Approved" in result_text:
+                    st.success(result_text)
+                elif "Rejected" in result_text or "Flagged" in result_text:
+                    st.error(result_text)
+                else:
+                    st.info(result_text)
+
+            except Exception as e:
+                st.error(f"Error connecting to backend: {e}")

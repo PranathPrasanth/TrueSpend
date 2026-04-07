@@ -1,7 +1,7 @@
 import pytesseract
 from PIL import Image
 import tempfile
-
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 def extract_text(file):
     with tempfile.NamedTemporaryFile(delete=False) as temp:
         temp.write(file.file.read())
