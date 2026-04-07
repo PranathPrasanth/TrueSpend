@@ -11,6 +11,7 @@ router=APIRouter()
 
 async def audit(file: UploadFile, purpose: str = Form(...)):
     receipt_text = extract_text(file)
+    print("OCR TEXT:", receipt_text)
     
     valid,message=validate_receipt(receipt_text)
 
