@@ -5,6 +5,9 @@ st.set_page_config(
     page_icon="💳",   # or "📊", "💰", etc.
     layout="centered"
 )
+
+st.title("📊 TrueSpend")
+
 uploaded_file = st.file_uploader("Upload Receipt", type=["png", "jpg", "jpeg", "pdf"])
 purpose = st.text_input("Business Purpose")
 
