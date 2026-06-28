@@ -1,5 +1,8 @@
 import streamlit as st
 import requests
+
+API_URL = "https://truespend.onrender.com"
+
 st.set_page_config(
     page_title="TrueSpend",
     page_icon="💳",   # or "📊", "💰", etc.
@@ -17,7 +20,7 @@ if st.button("Audit Expense"):
     else:
         try:
             response = requests.post(
-                "http://localhost:8000/audit/",
+                "https://truespend.onrender.com/audit",
                 files={"file": uploaded_file},
                 data={"purpose": purpose}
             )
