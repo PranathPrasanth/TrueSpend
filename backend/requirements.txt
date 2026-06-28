@@ -9,4 +9,3 @@ spacy
 openai
 numpy
 scikit-learn
-sqlite3
