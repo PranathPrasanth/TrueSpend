@@ -1,6 +1,10 @@
 import streamlit as st
 import requests
-
+st.set_page_config(
+    page_title="TrueSpend",
+    page_icon="💳",   # or "📊", "💰", etc.
+    layout="centered"
+)
 st.title("📊 TrueSpend")
 
 uploaded_file = st.file_uploader("Upload Receipt", type=["png", "jpg", "jpeg", "pdf"])
